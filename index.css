@@ -40,6 +40,7 @@
 .res-container{
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
 }
 .filter-btn{
     margin: 10px;
@@ -68,4 +69,8 @@
 }
 .filter{
     display: flex;
+}
+.res-link {
+    color: inherit;
+    text-decoration: inherit;
 }
