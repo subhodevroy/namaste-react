@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{lazy,Suspense} from 'react';
 import ReactDOM  from 'react-dom/client';
 import Header from './components/Header';
 import Body from './components/Body';
@@ -7,6 +7,8 @@ import Contact from './components/Contact';
 import Error from './components/Error';
 import RestaurantMenu from './components/RestaurantMenu';
 import { createBrowserRouter,RouterProvider,Outlet } from 'react-router-dom';
+import Shimmer from './components/Shimmer';
+//import Grocery from './components/Grocery';
 //using core React
 // const heading=React.createElement("h1",{id:"heading"},"Hello World from React")
 //using JSX -HTML like or XML like syntax
@@ -24,7 +26,10 @@ import { createBrowserRouter,RouterProvider,Outlet } from 'react-router-dom';
 // )
 //  const root=ReactDOM.createRoot(document.getElementById("root"))
 // root.render(<HeadingComponent1 />);
-
+/**
+ * Lazy Loading/Dynamic Bundling/Chunking/Code Splitting
+ */
+const Grocery=lazy(()=> import("./components/Grocery")); //Lazy Loading 
 const AppLayout =()=>{
     return (
         <div className='app'>
@@ -49,6 +54,10 @@ const appRouter=createBrowserRouter([
             {
                 path:"/contact",
                 element:<Contact />
+            },
+            {
+                path:"/grocery",
+                element:<Suspense fallback={<Shimmer/>}><Grocery /></Suspense>
             },
             {
                 path:"/restaurants/:resId",
