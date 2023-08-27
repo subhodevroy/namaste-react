@@ -1,4 +1,4 @@
-import React,{lazy,Suspense} from 'react';
+import React,{lazy,Suspense, useState} from 'react';
 import ReactDOM  from 'react-dom/client';
 import Header from './components/Header';
 import Body from './components/Body';
@@ -8,6 +8,10 @@ import Error from './components/Error';
 import RestaurantMenu from './components/RestaurantMenu';
 import { createBrowserRouter,RouterProvider,Outlet } from 'react-router-dom';
 import Shimmer from './components/Shimmer';
+import UserContext from './utils/userContext';
+import { Provider } from 'react-redux';
+import appStore from './utils/appStore';
+import Cart from './components/Cart';
 //import Grocery from './components/Grocery';
 //using core React
 // const heading=React.createElement("h1",{id:"heading"},"Hello World from React")
@@ -31,11 +35,17 @@ import Shimmer from './components/Shimmer';
  */
 const Grocery=lazy(()=> import("./components/Grocery")); //Lazy Loading 
 const AppLayout =()=>{
+    const [userName,setUserName]=useState()
     return (
+       <Provider store={appStore}>
+        <UserContext.Provider value={{loggedInUser: userName,setUserName}}>
         <div className='app'>
             <Header />
             <Outlet />
         </div>
+        </UserContext.Provider>
+       </Provider>
+        
     )
 }
 const appRouter=createBrowserRouter([
@@ -58,6 +68,10 @@ const appRouter=createBrowserRouter([
             {
                 path:"/grocery",
                 element:<Suspense fallback={<Shimmer/>}><Grocery /></Suspense>
+            },
+            {
+                path:"/cart",
+                element:<Cart/>
             },
             {
                 path:"/restaurants/:resId",
